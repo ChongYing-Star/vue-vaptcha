@@ -1,7 +1,17 @@
+:root {
+  --table-stripe-bg: #f8f8f8;
+  --inline-code-bg: #eee;
+}
+
+.dark {
+  --table-stripe-bg: var(--vp-c-bg-soft);
+  --inline-code-bg: var(--vp-c-mute);
+}
+
 .vp-doc tr:nth-child(2n) {
-  background-color: #f8f8f8;
+  background-color: var(--table-stripe-bg);
 }
 
 .vp-doc :not(pre) > code {
-  background-color: #eee;
+  background-color: var(--inline-code-bg);
 }
