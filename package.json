@@ -1,7 +1,6 @@
 {
   "name": "@chongying-star/vue-vaptcha",
-  "private": true,
-  "version": "1.0.0",
+  "version": "1.0.0-bate.2",
   "type": "module",
   "main": "dist/index.js",
   "exports": {
@@ -17,6 +16,21 @@
     "docs:preview": "vitepress preview docs --port 7011",
     "lint": "eslint src packages --ext .ts,.js,.tsx,.jsx,.vue"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chongying-star/vue-vaptcha.git"
+  },
+  "author": "TM-SunnyDay <sunnyday@chongying.studio> (https://github.com/TM-SunnyDay/)",
+  "license": "MIT",
+  "keywords": [
+    "vaptcha",
+    "typescript",
+    "vue"
+  ],
+  "bugs": {
+    "url": "https://github.com/chongying-star/vue-vaptcha/issues"
+  },
+  "homepage": "https://chongying-star.github.io/vue-vaptcha/",
   "peerDependencies": {
     "@chongying-star/vaptcha-typescript": ">=1.0.0",
     "vue": ">=3.2.47"

@@ -163,7 +163,6 @@ yarn-error.log
 
 # Editor directories and files
 .vscode/*
-!.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
@@ -172,9 +171,13 @@ yarn-error.log
 *.sln
 *.sw?
 
+# GitHub Acitons
+.github
+
 # Source code
 .eslintignore
 .eslintrc.js
+.eslintrc.cjs
 jest.config.ts
 
 docs/
@@ -182,3 +185,4 @@ packages/
 src/
 index.html
 vite.config.json
+vite.config.ts

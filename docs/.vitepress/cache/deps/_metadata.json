@@ -1,17 +1,17 @@
 {
-  "hash": "18d2f88a",
-  "browserHash": "86fb436c",
+  "hash": "f430bba2",
+  "browserHash": "69354a72",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "7a0e0b5a",
+      "fileHash": "cec896bb",
       "needsInterop": false
     },
     "@chongying-star/vaptcha-typescript": {
       "src": "../../../../node_modules/@chongying-star/vaptcha-typescript/dist/index.js",
       "file": "@chongying-star_vaptcha-typescript.js",
-      "fileHash": "b9e2ebd8",
+      "fileHash": "bb066afa",
       "needsInterop": false
     }
   },
