@@ -5,14 +5,14 @@
 
 ## Props
 
-| Attribute | Description                          | Type       | Accepted Values                  | Default      |
-| --------- | ------------------------------------ | ---------- | -------------------------------- | ------------ |
-| vid       | 验证单元的VID                        | `string`   | --                               | --           |
-| scene     | 验证单元场景                         | `number?`  | --                               | 0            |
-| lang      | 语言                                 | `string?`  | `auto` `zh-CN` `en` `zh-TW` `jp` | `auto`       |
-| area      | 验证节点区域                         | `string?`  | `auto` `sea` `na` `cn`           | `auto`       |
-| guide     | 是否在嵌入式图片底部显示操作提示文字 | `boolean?` | --                               | `false`      |
-| timeout   | Token过期时间（毫秒）                | `number?`  | --                               | `120 * 1000` |
+| Attribute | Description                                          | Type       | Accepted Values                  | Default      |
+| --------- | ---------------------------------------------------- | ---------- | -------------------------------- | ------------ |
+| vid       | 验证单元的VID（**非响应式**）                        | `string`   | --                               | --           |
+| scene     | 验证单元场景（**非响应式**）                         | `number?`  | --                               | 0            |
+| lang      | 语言（**非响应式**）                                 | `string?`  | `auto` `zh-CN` `en` `zh-TW` `jp` | `auto`       |
+| area      | 验证节点区域（**非响应式**）                         | `string?`  | `auto` `sea` `na` `cn`           | `auto`       |
+| guide     | 是否在嵌入式图片底部显示操作提示文字（**非响应式**） | `boolean?` | --                               | `false`      |
+| timeout   | Token过期时间（毫秒）                                | `number?`  | --                               | `120 * 1000` |
 
 ## Events
 

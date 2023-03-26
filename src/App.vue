@@ -1,7 +1,10 @@
 <template>
   <div>
     <div>
-      <VaptchaButton v-model="token" v-model:server="server" :timeout="30 * 1000" vid="59b252ed57f5a21114866a5d">hello</VaptchaButton>
+      <VaptchaButton v-model="token" v-model:server="server" :timeout="5 * 1000" vid="59b252ed57f5a21114866a5d" @pass="isPass = true" @timeout="isPass = false">hello</VaptchaButton>
+    </div>
+    <div>
+      {{ isPass }}
     </div>
     <div>
       <VaptchaPanel vid="59b252ed57f5a21114866a5d" :timeout="10 * 1000" ref="panel" />
@@ -15,6 +18,7 @@ import { VaptchaButton, VaptchaPanel } from '@packages/index';
 const server = ref('');
 const token = ref('');
 const panel = ref<InstanceType<typeof VaptchaPanel> >();
+const isPass = ref(false);
 
 watchEffect(() => {
   console.log(server.value, token.value);

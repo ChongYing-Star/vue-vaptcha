@@ -1,6 +1,6 @@
 {
   "name": "@chongying-star/vue-vaptcha",
-  "version": "1.0.0-bate.2",
+  "version": "1.0.0-bate.3",
   "type": "module",
   "main": "dist/index.js",
   "exports": {

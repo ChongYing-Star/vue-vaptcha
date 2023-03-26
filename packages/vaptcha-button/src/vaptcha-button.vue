@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<{
   color?: string,
   lang?: 'auto' | 'zh-CN' | 'en' | 'zh-TW' | 'jp',
   scene?: number,
-  style?: 'dark' | 'light',
+  vaptchaStyle?: 'dark' | 'light',
   modelValue?: string,
   server?: string,
   timeout?: number,
@@ -56,7 +56,6 @@ const timeoutId = ref<ReturnType<typeof setTimeout> >();
 const setSeverToken = (value: VaptchaServerToken) => {
   emits('update:modelValue', value.token);
   emits('update:server', value.server);
-  emits('pass', { server: value.server, token: value.token });
 };
 const reset = () => {
   clearTimeout(timeoutId.value);
@@ -74,10 +73,12 @@ onMounted(async () => {
     color: props.color,
     lang: props.lang,
     scene: props.scene,
-    style: props.style,
+    style: props.vaptchaStyle,
   });
   vaptcha.listen('pass', () => {
-    setSeverToken({ server: vaptcha.server, token: vaptcha.token });
+    const serverToken = { server: vaptcha.server, token: vaptcha.token };
+    setSeverToken(serverToken);
+    emits('pass', serverToken);
     timeoutId.value = setTimeout(() => {
       emits('timeout');
       reset();

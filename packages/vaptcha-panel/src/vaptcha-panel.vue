@@ -55,7 +55,6 @@ const loading = ref(true);
 const setSeverToken = (value: VaptchaServerToken) => {
   emits('update:modelValue', value.token);
   emits('update:server', value.server);
-  emits('pass', { server: value.server, token: value.token });
 };
 const reset = () => {
   clearTimeout(timeoutId.value);
@@ -76,7 +75,9 @@ onMounted(async () => {
   });
   loading.value = false;
   vaptcha.listen('pass', () => {
-    setSeverToken({ server: vaptcha.server, token: vaptcha.token });
+    const serverToken = { server: vaptcha.server, token: vaptcha.token };
+    setSeverToken(serverToken);
+    emits('pass', serverToken);
     timeoutId.value = setTimeout(() => {
       emits('timeout');
       reset();
