@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig } from 'vitepress'; // cSpell:word vitepress
 
 export default defineConfig({
   title: 'Vue Vaptcha',

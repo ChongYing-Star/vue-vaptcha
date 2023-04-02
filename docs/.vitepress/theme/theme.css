@@ -1,6 +1,17 @@
 :root {
   --table-stripe-bg: #f8f8f8;
   --inline-code-bg: #eee;
+  --vp-layout-max-width: 100vw;
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --vp-layout-max-width: 1920px;
+  }
+}
+
+.VPDoc.has-aside .content .content-container {
+  max-width: unset;
 }
 
 .dark {
@@ -14,4 +25,8 @@
 
 .vp-doc :not(pre) > code {
   background-color: var(--inline-code-bg);
+}
+
+.vp-doc td {
+  white-space: nowrap;
 }

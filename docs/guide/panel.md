@@ -1,22 +1,54 @@
 <script setup>
+import { ref } from 'vue';
+const token = ref(''), server = ref('');
 </script>
 
 # 面板（嵌入式）
 
+## 使用方法
+
+```vue
+<template>
+  <VaptchaPanel
+    v-model="token"
+    v-model:server="server"
+    :vid="vid"
+  />
+</template>
+<script setup>
+import '@chongying-star/vue-vaptcha/style.css';
+import { VaptchaPanel } from '@chongying-star/vue-vaptcha';
+
+const vid = '...' // 使用你自己的vid
+const token = ref(''), server = ref('');
+</script>
+```
+
+## 预览
+
+<AfterLibLoaded>
+  <VaptchaPanel v-model="token" v-model:server="server" vid="59b252ed57f5a21114866a5d" style="max-width: 500px;" />
+</AfterLibLoaded>
+
+::: info Output:
+token = "{{ token }}"
+
+server = "{{ server }}"
+:::
+
 ## Props
 
-| Attribute | Description                                          | Type       | Accepted Values                  | Default      |
-| --------- | ---------------------------------------------------- | ---------- | -------------------------------- | ------------ |
-| vid       | 验证单元的VID（**非响应式**）                        | `string`   | --                               | --           |
-| scene     | 验证单元场景（**非响应式**）                         | `number?`  | --                               | 0            |
-| lang      | 语言（**非响应式**）                                 | `string?`  | `auto` `zh-CN` `en` `zh-TW` `jp` | `auto`       |
-| area      | 验证节点区域（**非响应式**）                         | `string?`  | `auto` `sea` `na` `cn`           | `auto`       |
-| guide     | 是否在嵌入式图片底部显示操作提示文字（**非响应式**） | `boolean?` | --                               | `false`      |
-| timeout   | Token过期时间（毫秒）                                | `number?`  | --                               | `120 * 1000` |
+| Attribute | Description                   | Type                                        | Accepted Values | Default      |
+| --------- | ----------------------------- | ------------------------------------------- | --------------- | ------------ |
+| vid       | 验证单元的VID（**非响应式**） | `string?`                                   | --              | --           |
+| scene     | 验证单元场景（**非响应式**）  | `number?`                                   | `0`~`6`         | --           |
+| timeout   | Token过期时间（毫秒）         | `number?`                                   | --              | `120 * 1000` |
+| disabled  | 禁用                          | `boolean?`                                  | --              | `false`      |
+| option    | Vaptcha选项（**非响应式**）   | `Readonly<Partial<VaptchaOptionClickType>>` | --              | --           |
 
 ## Events
 
-| Event Name        | Description                              | Payloads                              |
+| Event name        | Description                              | Payloads                              |
 | ----------------- | ---------------------------------------- | ------------------------------------- |
 | update:modelValue | 更新token，可以使用`v-model`接收         | `[string]`                            |
 | update:server     | 更新server，可以使用`v-model:server`接收 | `[string]`                            |
@@ -27,12 +59,13 @@
 
 | Name    | Description            | Scope |
 | ------- | ---------------------- | ----- |
-| --      | 加载时显示的文本       | `{}`  |
-| loading | 自定义加载时显示的内容 | `{}`  |
+| --      | 加载时显示的文本       | --    |
+| loading | 自定义加载时显示的内容 | --    |
 
-## Methods
+## Exposes
 
-| Method           | Description                                                        | Parameters                         |
-| ---------------- | ------------------------------------------------------------------ | ---------------------------------- |
-| reset            | 重置                                                               | `[]`                               |
-| renderTokenInput | 用于向表单添加两个名为`VAPTCHA_server`、`VAPTCHA_token`的input标签 | `[string\|HTMLElement\|undefined]` |
+| Name             | Description                                                | Type                                                       |
+| ---------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| vaptchaInstance  | vaptcha实例                                                | `ReadonlyShallowRef<CyVaptcha\|undefined>`                 |
+| reset            | 重置                                                       | `() => void`                                               |
+| renderTokenInput | 向表单添加名为`VAPTCHA_server`、`VAPTCHA_token`的input标签 | `(container?: string \| HTMLElement \| undefined) => void` |
