@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-vaptcha-button" ref="element">
+  <div class="vue-vaptcha-button" :class="{ 'is-disabled': disabled }" ref="element">
     <slot name="loading">
       <div class="vue-vaptcha-button-loading">
         <svg xmlns="http://www.w3.org/2000/svg" width="48px" height="60px" viewBox="0 0 24 30">
@@ -23,21 +23,26 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, onMounted, withDefaults } from 'vue';
-import type { VaptchaServerToken, CyVaptcha } from '@chongying-star/vaptcha-typescript';
+import { shallowRef, readonly, onMounted, PropType } from 'vue';
+import type { VaptchaServerToken, CyVaptcha, VaptchaOptionClickType } from '@chongying-star/vaptcha-typescript';
+import { option as defaultOption } from '../../config';
 
-const props = withDefaults(defineProps<{
-  vid: string,
-  area?: 'auto' | 'sea' | 'na' | 'cn',
-  color?: string,
-  lang?: 'auto' | 'zh-CN' | 'en' | 'zh-TW' | 'jp',
-  scene?: number,
-  vaptchaStyle?: 'dark' | 'light',
-  modelValue?: string,
-  server?: string,
-  timeout?: number,
-}>(), {
-  timeout: 120 * 1000,
+const props = defineProps({
+  vid: {
+    type: String,
+    validator ({ vid, option }) {
+      return typeof vid === 'string' || typeof defaultOption.vid === 'string' || typeof option?.vid === 'string';
+    },
+  },
+  scene: Number,
+  option: Object as PropType<Readonly<Partial<VaptchaOptionClickType>>>,
+  modelValue: String,
+  server: String,
+  timeout: {
+    type: Number,
+    default: 120 * 1000,
+  },
+  disabled: Boolean,
 });
 
 type Emits = {
@@ -49,9 +54,9 @@ type Emits = {
 }
 const emits = defineEmits<Emits>();
 
-const element = ref<HTMLDivElement>();
-const vaptchaObject = shallowRef<CyVaptcha>();
-const timeoutId = ref<ReturnType<typeof setTimeout> >();
+const element = shallowRef<HTMLDivElement>();
+const vaptchaInstance = shallowRef<CyVaptcha>();
+const timeoutId = shallowRef<ReturnType<typeof setTimeout> >();
 
 const setSeverToken = (value: VaptchaServerToken) => {
   emits('update:modelValue', value.token);
@@ -59,22 +64,20 @@ const setSeverToken = (value: VaptchaServerToken) => {
 };
 const reset = () => {
   clearTimeout(timeoutId.value);
-  vaptchaObject.value?.reset();
+  vaptchaInstance.value?.reset();
   setSeverToken({ server: '', token: '' });
 };
 
 onMounted(async () => {
   const { createVaptcha } = await import('@chongying-star/vaptcha-typescript');
   const vaptcha = await createVaptcha({
+    ...defaultOption,
     container: element.value as HTMLDivElement,
     mode: 'click',
-    vid: props.vid,
-    area: props.area,
-    color: props.color,
-    lang: props.lang,
     scene: props.scene,
-    style: props.vaptchaStyle,
-  });
+    ...props.option,
+    vid: props.vid ?? props.option?.vid ?? defaultOption.vid ?? '',
+  }, undefined, { immediateRender: true });
   vaptcha.listen('pass', () => {
     const serverToken = { server: vaptcha.server, token: vaptcha.token };
     setSeverToken(serverToken);
@@ -85,13 +88,14 @@ onMounted(async () => {
     }, props.timeout);
   });
   vaptcha.listen('close', () => emits('close'));
-  vaptchaObject.value = vaptcha;
+  vaptchaInstance.value = vaptcha;
 });
 
 defineExpose({
+  vaptchaInstance: readonly(vaptchaInstance),
   reset,
-  validate: () => vaptchaObject.value?.validate(),
-  renderTokenInput: (...args: Parameters<CyVaptcha['renderTokenInput']>) => vaptchaObject.value?.renderTokenInput(...args),
+  validate: () => vaptchaInstance.value?.validate(),
+  renderTokenInput: (...args: Parameters<CyVaptcha['renderTokenInput']>) => vaptchaInstance.value?.renderTokenInput(...args),
 });
 </script>
 
@@ -115,6 +119,14 @@ defineExpose({
   height: 14px;
   fill: currentColor;
   margin-right: 8px;
+}
+
+.vue-vaptcha-button.is-disabled {
+  cursor: not-allowed;
+}
+.vue-vaptcha-button.is-disabled .vp-basic-btn {
+  pointer-events: none;
+  filter: grayscale(100%);
 }
 
 /* 修复右侧悬浮动画位置不准确的问题 */

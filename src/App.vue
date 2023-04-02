@@ -1,29 +1,57 @@
 <template>
-  <div>
-    <div>
-      <VaptchaButton v-model="token" v-model:server="server" :timeout="5 * 1000" vid="59b252ed57f5a21114866a5d" @pass="isPass = true" @timeout="isPass = false">hello</VaptchaButton>
-    </div>
-    <div>
-      {{ isPass }}
-    </div>
-    <div>
-      <VaptchaPanel vid="59b252ed57f5a21114866a5d" :timeout="10 * 1000" ref="panel" />
-    </div>
+  <div class="app-tabs">
+    <span @click="tab = 'button'" class="app-tab">按钮（点击式）</span>
+    <span @click="tab = 'panel'" class="app-tab">面板（嵌入式）</span>
+    <span @click="tab = 'util'" class="app-tab">隐藏式（工具函数）</span>
+    <span @click="tab = 'composables'" class="app-tab">隐藏式（组合函数）</span>
+  </div>
+  <div class="app-body" style="width: 500px;">
+    <VaptchaButton v-if="tab === 'button'" />
+    <VaptchaPanel v-if="tab === 'panel'" />
+    <VerifyAndGetToken v-if="tab === 'util'" />
+    <UseInvisibleVaptcha v-if="tab === 'composables'" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import { VaptchaButton, VaptchaPanel } from '@packages/index';
-const server = ref('');
-const token = ref('');
-const panel = ref<InstanceType<typeof VaptchaPanel> >();
-const isPass = ref(false);
+import VaptchaButton from './vaptcha-button.vue';
+import VaptchaPanel from './vaptcha-panel.vue';
+import UseInvisibleVaptcha from './use-invisible-vaptcha.vue';
+import VerifyAndGetToken from './verify-and-get-token.vue';
+import { ref } from 'vue';
 
-watchEffect(() => {
-  console.log(server.value, token.value);
-});
+const tab = ref('button');
 </script>
 
-<style scoped>
+<style>
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  height: 100vh;
+  overflow: auto;
+}
+
+.app-tabs {
+  padding: 16px;
+}
+
+.app-tab {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.app-tab:not(:last-child) {
+  margin-right: 8px;
+}
+
+/* .app-body {
+} */
 </style>

@@ -28,6 +28,7 @@ export default defineConfig({
           items: [
             { text: '按钮（点击式）', link: '/guide/button' },
             { text: '面板（嵌入式）', link: '/guide/panel' },
+            { text: '隐藏式', link: '/guide/invisible' },
           ],
         },
       ],
