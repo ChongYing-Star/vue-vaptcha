@@ -13,21 +13,21 @@
     "skipLibCheck": true,
     "noEmit": true,
     "baseUrl": ".",
+    "sourceMap": true,
+    "declaration": true,
     "paths": {
       "@packages/*": ["./packages/*"]
     }
   },
   "include": [
-    "docs/**/*.ts",
-    "docs/.vitepress/**/*.ts",
-    "packages/**/*.ts",
-    "packages/**/*.d.ts",
-    "packages/**/*.tsx",
-    "packages/**/*.vue",
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "docs/**/*",
+    "docs/.vitepress/**/*",
+    "packages/**/*",
+    "src/**/*",
+    "__tests__/**/*",
+    "__mocks__/**/*"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    { "path": "./tsconfig.node.json" }
+  ]
 }
