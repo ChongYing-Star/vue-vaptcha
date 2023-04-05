@@ -54,7 +54,7 @@ type Emits = {
 const emits = defineEmits<Emits>();
 
 const element = shallowRef<HTMLDivElement>();
-const vaptchaInstance = shallowRef<CyVaptcha>();
+const __vaptchaInstance = shallowRef<CyVaptcha>();
 const timeoutId = shallowRef<ReturnType<typeof setTimeout> >();
 const loading = shallowRef(true);
 
@@ -64,7 +64,7 @@ const setSeverToken = (value: VaptchaServerToken) => {
 };
 const reset = () => {
   clearTimeout(timeoutId.value);
-  vaptchaInstance.value?.reset();
+  __vaptchaInstance.value?.reset();
   setSeverToken({ server: '', token: '' });
 };
 
@@ -88,13 +88,15 @@ onMounted(async () => {
       reset();
     }, props.timeout);
   });
-  vaptchaInstance.value = vaptcha;
+  __vaptchaInstance.value = vaptcha;
 });
 
+const vaptchaInstance = readonly(__vaptchaInstance);
+const renderTokenInput = (...args: Parameters<CyVaptcha['renderTokenInput']>) => __vaptchaInstance.value?.renderTokenInput(...args);
 defineExpose({
-  vaptchaInstance: readonly(vaptchaInstance),
+  vaptchaInstance,
   reset,
-  renderTokenInput: (...args: Parameters<CyVaptcha['renderTokenInput']>) => vaptchaInstance.value?.renderTokenInput(...args),
+  renderTokenInput,
 });
 </script>
 

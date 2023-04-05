@@ -55,7 +55,7 @@ type Emits = {
 const emits = defineEmits<Emits>();
 
 const element = shallowRef<HTMLDivElement>();
-const vaptchaInstance = shallowRef<CyVaptcha>();
+const __vaptchaInstance = shallowRef<CyVaptcha>();
 const timeoutId = shallowRef<ReturnType<typeof setTimeout> >();
 
 const setSeverToken = (value: VaptchaServerToken) => {
@@ -64,7 +64,7 @@ const setSeverToken = (value: VaptchaServerToken) => {
 };
 const reset = () => {
   clearTimeout(timeoutId.value);
-  vaptchaInstance.value?.reset();
+  __vaptchaInstance.value?.reset();
   setSeverToken({ server: '', token: '' });
 };
 
@@ -88,14 +88,17 @@ onMounted(async () => {
     }, props.timeout);
   });
   vaptcha.listen('close', () => emits('close'));
-  vaptchaInstance.value = vaptcha;
+  __vaptchaInstance.value = vaptcha;
 });
 
+const vaptchaInstance = readonly(__vaptchaInstance);
+const validate = () => __vaptchaInstance.value?.validate();
+const renderTokenInput = (...args: Parameters<CyVaptcha['renderTokenInput']>) => __vaptchaInstance.value?.renderTokenInput(...args);
 defineExpose({
-  vaptchaInstance: readonly(vaptchaInstance),
+  vaptchaInstance,
   reset,
-  validate: () => vaptchaInstance.value?.validate(),
-  renderTokenInput: (...args: Parameters<CyVaptcha['renderTokenInput']>) => vaptchaInstance.value?.renderTokenInput(...args),
+  validate,
+  renderTokenInput,
 });
 </script>
 
