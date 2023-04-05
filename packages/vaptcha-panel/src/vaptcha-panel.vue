@@ -30,8 +30,8 @@ import { option as defaultOption } from '../../config';
 const props = defineProps({
   vid: {
     type: String,
-    validator ({ vid, option }) {
-      return typeof vid === 'string' || typeof defaultOption.vid === 'string' || typeof option?.vid === 'string';
+    validator (vid) {
+      return typeof vid === 'string' || typeof defaultOption.vid === 'string' || typeof (this as any).option?.vid === 'string';
     },
   },
   scene: Number,
