@@ -4,7 +4,7 @@ import { nextTick, toRaw, isReadonly } from 'vue';
 import { MockCyVaptcha } from '../MockCyVaptcha';
 import { createVaptcha as $createVaptcha, CyVaptcha } from '@chongying-star/vaptcha-typescript';
 import * as config from '@packages/config';
-import Button from '@packages/vaptcha-button/src/vaptcha-button.vue';
+import Panel from '@packages/vaptcha-panel/src/vaptcha-panel.vue';
 
 type C = typeof $createVaptcha;
 
@@ -26,14 +26,14 @@ vi.doMock('@chongying-star/vaptcha-typescript', () => ({ createVaptcha }));
  */
 
 test('Initialization', async () => {
-  const wrapper = mount(Button as any, { props: { vid: 'test vid' } });
+  const wrapper = mount(Panel as any, { props: { vid: 'test vid' } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
 
   expect(createVaptcha).toHaveBeenCalledOnce();
   expect(createVaptcha).toHaveBeenCalledWith({
     container: wrapper.element,
-    mode: 'click',
+    mode: 'embedded',
     scene: undefined,
     vid: 'test vid',
   }, undefined, {
@@ -41,46 +41,40 @@ test('Initialization', async () => {
   });
 
   const vaptcha = createVaptcha.mock.results[0].value as MockCyVaptcha;
-  const instance = wrapper.vm as InstanceType<typeof Button>;
+  const instance = wrapper.vm as InstanceType<typeof Panel>;
   expect(toRaw(instance.vaptchaInstance)).toBe(vaptcha);
   expect(isReadonly(instance.vaptchaInstance)).toBe(true);
   expect(instance.reset).toBeTypeOf('function');
-  expect(instance.validate).toBeTypeOf('function');
   expect(instance.renderTokenInput).toBeTypeOf('function');
 
   await nextTick();
-  expect(wrapper.find('.vue-vaptcha-button-loading').exists()).toBe(false);
+  expect(wrapper.find('.vue-vaptcha-panel-loading').exists()).toBe(false);
 });
 
 test('Initialization should called vaptcha\'s methods', async () => {
   const vaptcha = new MockCyVaptcha();
   const listenSpy = vi.spyOn(vaptcha, 'listen');
   createVaptcha.mockResolvedValueOnce(vaptcha as unknown as CyVaptcha);
-  shallowMount(Button as any, { props: { vid: 'test vid' } });
+  shallowMount(Panel as any, { props: { vid: 'test vid' } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
-  expect(listenSpy).toHaveBeenCalledTimes(2);
+  expect(listenSpy).toHaveBeenCalledTimes(1);
   const passMethod = vaptcha.callbackMap.get('pass');
-  const closeMethod = vaptcha.callbackMap.get('close');
   expect(listenSpy).toHaveBeenCalledWith('pass', passMethod);
-  expect(listenSpy).toHaveBeenCalledWith('close', closeMethod);
 });
 
 test('Call expose methods', async () => {
   const vaptcha = new MockCyVaptcha();
   const resetSpy = vi.spyOn(vaptcha, 'reset');
-  const validateSpy = vi.spyOn(vaptcha, 'validate');
   const renderTokenInputSpy = vi.spyOn(vaptcha, 'renderTokenInput');
   createVaptcha.mockResolvedValueOnce(vaptcha as unknown as CyVaptcha);
-  const wrapper = shallowMount(Button as any, { props: { vid: 'test vid' } });
+  const wrapper = shallowMount(Panel as any, { props: { vid: 'test vid' } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
 
-  const instance = wrapper.vm as InstanceType<typeof Button>;
+  const instance = wrapper.vm as InstanceType<typeof Panel>;
   instance.reset();
   expect(resetSpy).toHaveBeenCalledOnce();
-  instance.validate();
-  expect(validateSpy).toHaveBeenCalledOnce();
   instance.renderTokenInput('#el');
   expect(renderTokenInputSpy).toHaveBeenCalledOnce();
   expect(renderTokenInputSpy).toHaveBeenCalledWith('#el');
@@ -96,7 +90,7 @@ test.each([
   { option: { vid: 'option vid' } },
   { option: { scene: 3 } },
 ])('Initialization with props: "%o"', async (props) => {
-  const wrapper = shallowMount(Button as any, { props });
+  const wrapper = shallowMount(Panel as any, { props });
   expect(wrapper.props()).toEqual({
     timeout: 120000,
     disabled: false,
@@ -107,7 +101,7 @@ test.each([
   await await new Promise((r) => setTimeout(r, 50));
   expect(createVaptcha).toHaveBeenCalledWith({
     container: wrapper.element,
-    mode: 'click',
+    mode: 'embedded',
     vid: props.vid ?? props.option?.vid ?? '',
     scene: props.scene,
     ...props.option,
@@ -124,31 +118,21 @@ test.each([
   { area: 'auto' },
 ])('Initialization with config: "%o"', async (defaultOption) => {
   ((config as any)['__optionGetterMock'] as Mock).mockReturnValue(defaultOption);
-  const wrapper = shallowMount(Button as any);
+  const wrapper = shallowMount(Panel as any);
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
   expect(createVaptcha).toHaveBeenCalledWith({
     ...defaultOption,
     container: wrapper.element,
-    mode: 'click',
+    mode: 'embedded',
     vid: defaultOption.vid ?? '',
   }, undefined, {
     immediateRender: true,
   });
 });
 
-test('Listen "close"', async () => {
-  const wrapper = shallowMount(Button as any, { props: { vid: 'test vid' } });
-  await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
-
-  const vaptcha = createVaptcha.mock.results[0].value as MockCyVaptcha;
-  vaptcha.callbackMap.get('close')?.();
-  expect(wrapper.emitted('close')).toHaveLength(1);
-});
-
 test('Listen "pass"', async () => {
-  const wrapper = shallowMount(Button as any, { props: { vid: 'test vid' } });
+  const wrapper = shallowMount(Panel as any, { props: { vid: 'test vid' } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
 
@@ -164,7 +148,7 @@ test('Listen "pass"', async () => {
 
 test('Timeout', async () => {
   const timeout = 60 * 1000;
-  const wrapper = shallowMount(Button as any, { props: { vid: 'test vid', timeout } });
+  const wrapper = shallowMount(Panel as any, { props: { vid: 'test vid', timeout } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
 
@@ -197,7 +181,7 @@ test('Timeout', async () => {
 
 test('Reset without timeout', async () => {
   const timeout = 60 * 1000;
-  const wrapper = shallowMount(Button as any, { props: { vid: 'test vid', timeout } });
+  const wrapper = shallowMount(Panel as any, { props: { vid: 'test vid', timeout } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
 
@@ -216,7 +200,7 @@ test('Reset without timeout', async () => {
     expect(wrapper.emitted('update:server')?.[0]).toEqual([vaptcha.server]);
 
     const timerCount = vi.getTimerCount();
-    (wrapper.vm as InstanceType<typeof Button>).reset();
+    (wrapper.vm as InstanceType<typeof Panel>).reset();
     expect(vi.getTimerCount()).toBe(timerCount - 1);
 
     expect(wrapper.emitted()).not.toHaveProperty('timeout');
@@ -233,7 +217,7 @@ test('Reset without timeout', async () => {
 });
 
 test('When disabled', async () => {
-  const wrapper = mount(Button as any, { props: { disabled: true } });
+  const wrapper = mount(Panel as any, { props: { disabled: true } });
   await flushPromises();
   await await new Promise((r) => setTimeout(r, 50));
   await nextTick();
