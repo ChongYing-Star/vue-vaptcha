@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, readonly, onMounted, PropType } from 'vue';
+import { shallowRef, shallowReadonly, onMounted, PropType } from 'vue';
 import type { VaptchaServerToken, CyVaptcha, VaptchaOptionEmbeddedType } from '@chongying-star/vaptcha-typescript';
 import { option as defaultOption } from '../../config';
 
@@ -91,7 +91,7 @@ onMounted(async () => {
   __vaptchaInstance.value = vaptcha;
 });
 
-const vaptchaInstance = readonly(__vaptchaInstance);
+const vaptchaInstance = shallowReadonly(__vaptchaInstance);
 const renderTokenInput = (...args: Parameters<CyVaptcha['renderTokenInput']>) => __vaptchaInstance.value?.renderTokenInput(...args);
 defineExpose({
   vaptchaInstance,

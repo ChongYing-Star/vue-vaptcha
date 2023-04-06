@@ -1,4 +1,4 @@
-import { shallowRef, readonly, unref, Ref } from 'vue';
+import { shallowRef, shallowReadonly, unref, Ref } from 'vue';
 import type { CyVaptcha, VaptchaServerToken, VaptchaOptionInvisibleType } from '@chongying-star/vaptcha-typescript';
 import { option as defaultOption } from '../config';
 import { InitError } from './types';
@@ -10,7 +10,7 @@ interface UseInvisibleOption {
   onTimeout?(): any,
 }
 
-export function useInvisibleVaptcha (option: UseInvisibleOption) {
+export function useInvisibleVaptcha (option?: UseInvisibleOption) {
   const { timeout, onPass, onClose, onTimeout } = { timeout: 120 * 1000, ...option };
   const vaptchaInstance = shallowRef<CyVaptcha>();
   const token = shallowRef('');
@@ -52,9 +52,9 @@ export function useInvisibleVaptcha (option: UseInvisibleOption) {
     return vaptchaInstance.value = vaptcha;
   };
   return {
-    vaptchaInstance: readonly(vaptchaInstance),
-    token: readonly(token),
-    server: readonly(server),
+    vaptchaInstance: shallowReadonly(vaptchaInstance),
+    token: shallowReadonly(token),
+    server: shallowReadonly(server),
     init,
     validate: (...args: Parameters<CyVaptcha['validate']>) => vaptchaInstance.value?.validate(...args),
     reset,

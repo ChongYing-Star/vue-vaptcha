@@ -1,6 +1,6 @@
 import { test, expect, vi, Mock, beforeEach } from 'vitest';
 import { mount, shallowMount, flushPromises } from '@vue/test-utils';
-import { nextTick, toRaw, isReadonly } from 'vue';
+import { nextTick, toRaw } from 'vue';
 import { MockCyVaptcha } from '../MockCyVaptcha';
 import { createVaptcha as $createVaptcha, CyVaptcha } from '@chongying-star/vaptcha-typescript';
 import * as config from '@packages/config';
@@ -43,9 +43,14 @@ test('Initialization', async () => {
   const vaptcha = createVaptcha.mock.results[0].value as MockCyVaptcha;
   const instance = wrapper.vm as InstanceType<typeof Panel>;
   expect(toRaw(instance.vaptchaInstance)).toBe(vaptcha);
-  expect(isReadonly(instance.vaptchaInstance)).toBe(true);
   expect(instance.reset).toBeTypeOf('function');
   expect(instance.renderTokenInput).toBeTypeOf('function');
+
+  const consoleSpy = vi.spyOn(console, 'warn');
+  instance.vaptchaInstance = undefined;
+  expect(consoleSpy).toHaveBeenCalledOnce();
+  expect(toRaw(instance.vaptchaInstance)).toBe(vaptcha);
+  expect(consoleSpy.mock.calls[0][0]).toBe('[Vue warn] Set operation on key "value" failed: target is readonly.');
 
   await nextTick();
   expect(wrapper.find('.vue-vaptcha-panel-loading').exists()).toBe(false);
