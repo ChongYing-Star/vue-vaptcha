@@ -9,7 +9,7 @@ export class MockCyVaptcha implements C {
   server = '';
   callbackMap = new Map<string, Parameters<CyVaptcha['listen']>[1]>();
 
-  constructor (readonly option?: VaptchaOption) {
+  constructor (public option?: VaptchaOption) {
     this.vaptcha = this;
   }
 
