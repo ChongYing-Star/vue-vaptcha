@@ -17,6 +17,7 @@ beforeEach(() => ((config as any)['__optionGetterMock'] as Mock).mockReturnValue
 
 const createVaptcha = vi.fn<Parameters<C>, ReturnType<C>>(() => Promise.resolve(new MockCyVaptcha() as unknown as CyVaptcha));
 vi.doMock('@chongying-star/vaptcha-typescript', () => ({ createVaptcha }));
+beforeEach(() => createVaptcha.mockRestore());
 
 /**
  * 组件测试的代码是与测试框架妥协后的产物，包括：
@@ -28,7 +29,7 @@ vi.doMock('@chongying-star/vaptcha-typescript', () => ({ createVaptcha }));
 test('Initialization', async () => {
   const wrapper = mount(Button as any, { props: { vid: 'test vid' } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
 
   expect(createVaptcha).toHaveBeenCalledOnce();
   expect(createVaptcha).toHaveBeenCalledWith({
@@ -63,7 +64,7 @@ test('Initialization should called vaptcha\'s methods', async () => {
   createVaptcha.mockResolvedValueOnce(vaptcha as unknown as CyVaptcha);
   shallowMount(Button as any, { props: { vid: 'test vid' } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
   expect(listenSpy).toHaveBeenCalledTimes(2);
   const passMethod = vaptcha.callbackMap.get('pass');
   const closeMethod = vaptcha.callbackMap.get('close');
@@ -79,7 +80,7 @@ test('Call expose methods', async () => {
   createVaptcha.mockResolvedValueOnce(vaptcha as unknown as CyVaptcha);
   const wrapper = shallowMount(Button as any, { props: { vid: 'test vid' } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
 
   const instance = wrapper.vm as InstanceType<typeof Button>;
   instance.reset();
@@ -109,7 +110,7 @@ test.each([
   });
 
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
   expect(createVaptcha).toHaveBeenCalledWith({
     container: wrapper.element,
     mode: 'click',
@@ -131,7 +132,7 @@ test.each([
   ((config as any)['__optionGetterMock'] as Mock).mockReturnValue(defaultOption);
   const wrapper = shallowMount(Button as any);
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
   expect(createVaptcha).toHaveBeenCalledWith({
     ...defaultOption,
     container: wrapper.element,
@@ -145,7 +146,7 @@ test.each([
 test('Listen "close"', async () => {
   const wrapper = shallowMount(Button as any, { props: { vid: 'test vid' } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
 
   const vaptcha = createVaptcha.mock.results[0].value as MockCyVaptcha;
   vaptcha.callbackMap.get('close')?.();
@@ -155,7 +156,7 @@ test('Listen "close"', async () => {
 test('Listen "pass"', async () => {
   const wrapper = shallowMount(Button as any, { props: { vid: 'test vid' } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
 
   const vaptcha = createVaptcha.mock.results[0].value as MockCyVaptcha;
   vaptcha.callbackMap.get('pass')?.();
@@ -171,7 +172,7 @@ test('Timeout', async () => {
   const timeout = 60 * 1000;
   const wrapper = shallowMount(Button as any, { props: { vid: 'test vid', timeout } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
 
   try {
     vi.useFakeTimers();
@@ -204,7 +205,7 @@ test('Reset without timeout', async () => {
   const timeout = 60 * 1000;
   const wrapper = shallowMount(Button as any, { props: { vid: 'test vid', timeout } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
 
   try {
     vi.useFakeTimers();
@@ -224,13 +225,15 @@ test('Reset without timeout', async () => {
     (wrapper.vm as InstanceType<typeof Button>).reset();
     expect(vi.getTimerCount()).toBe(timerCount - 1);
 
-    expect(wrapper.emitted()).not.toHaveProperty('timeout');
     expect(resetSpy).toHaveBeenCalled();
     expect(wrapper.emitted('update:modelValue')).toHaveLength(2);
     expect(wrapper.emitted('update:modelValue')?.[1]).toEqual(['']);
     expect(wrapper.emitted('update:server')).toHaveLength(2);
     expect(wrapper.emitted('update:server')?.[1]).toEqual(['']);
 
+    vi.advanceTimersByTime(timeout);
+    vi.runAllTimers();
+    expect(wrapper.emitted()).not.toHaveProperty('timeout');
     expect(wrapper.emitted('pass')).toHaveLength(1);
   } finally {
     vi.useRealTimers();
@@ -240,7 +243,7 @@ test('Reset without timeout', async () => {
 test('When disabled', async () => {
   const wrapper = mount(Button as any, { props: { disabled: true } });
   await flushPromises();
-  await await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 50));
   await nextTick();
   expect(wrapper.classes()).toContain('is-disabled');
 });
