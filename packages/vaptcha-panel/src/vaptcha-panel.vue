@@ -74,8 +74,8 @@ onMounted(async () => {
     ...defaultOption,
     container: element.value as HTMLDivElement,
     mode: 'embedded',
-    scene: props.scene,
     ...props.option,
+    scene: props.scene ?? props.option?.scene ?? defaultOption.scene,
     vid: props.vid ?? props.option?.vid ?? defaultOption.vid ?? '',
   }, undefined, { immediateRender: true });
   loading.value = false;
