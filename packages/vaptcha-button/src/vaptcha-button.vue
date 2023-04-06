@@ -1,6 +1,6 @@
 <template>
   <div class="vue-vaptcha-button" :class="{ 'is-disabled': disabled }" ref="element">
-    <slot name="loading">
+    <slot v-if="loading" name="loading">
       <div class="vue-vaptcha-button-loading">
         <svg xmlns="http://www.w3.org/2000/svg" width="48px" height="60px" viewBox="0 0 24 30">
           <rect x="0" y="9.22656" width="4" height="12.5469">
@@ -57,6 +57,7 @@ const emits = defineEmits<Emits>();
 const element = shallowRef<HTMLDivElement>();
 const __vaptchaInstance = shallowRef<CyVaptcha>();
 const timeoutId = shallowRef<ReturnType<typeof setTimeout> >();
+const loading = shallowRef(true);
 
 const setSeverToken = (value: VaptchaServerToken) => {
   emits('update:modelValue', value.token);
@@ -78,6 +79,7 @@ onMounted(async () => {
     scene: props.scene ?? props.option?.scene ?? defaultOption.scene,
     vid: props.vid ?? props.option?.vid ?? defaultOption.vid ?? '',
   }, undefined, { immediateRender: true });
+  loading.value = false;
   vaptcha.listen('pass', () => {
     const serverToken = { server: vaptcha.server, token: vaptcha.token };
     setSeverToken(serverToken);
