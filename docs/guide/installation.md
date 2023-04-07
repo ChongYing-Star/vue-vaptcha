@@ -16,6 +16,19 @@ $ pnpm install @chongying-star/vue-vaptcha
 ```
 :::
 
+### 本项目依赖`@chongying-star/vaptcha-typescript`包（[🔗NPM](https://www.npmjs.com/package/@chongying-star/vaptcha-typescript)） 如果已经安装请跳过
+::: code-group
+```sh [npm]
+$ npm install @chongying-star/vaptcha-typescript@>=1.0.0 --save
+```
+```sh [yarn]
+$ yarn add @chongying-star/vaptcha-typescript@>=1.0.0
+```
+```sh [pnpm]
+$ pnpm install @chongying-star/vaptcha-typescript@>=1.0.0
+```
+:::
+
 ## 全局注册组件
 
 ::: code-group
