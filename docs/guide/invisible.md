@@ -1,4 +1,4 @@
-<!-- cSpell:words instanceof -->
+<!-- cSpell:words instanceof composables -->
 
 <script setup>
 </script>

@@ -16,7 +16,8 @@
 
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue';
-import { verifyAndGetToken, VaptchaServerToken } from '@packages/index';
+import { verifyAndGetToken } from '@packages/index';
+import { VaptchaServerToken } from '@chongying-star/vaptcha-typescript';
 const serverToken = reactive<VaptchaServerToken>({
   server: '',
   token: '',

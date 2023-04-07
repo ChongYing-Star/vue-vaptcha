@@ -1,3 +1,7 @@
+import {
+  __publicField
+} from "./chunk-T2T6Q22Z.js";
+
 // node_modules/@chongying-star/vaptcha-typescript/dist/vaptcha.js
 var vaptcha_default = (...args) => window.vaptcha(...args);
 
@@ -19,7 +23,9 @@ function defineCyVaptchaConfig(config2) {
 // node_modules/@chongying-star/vaptcha-typescript/dist/CyVaptcha.js
 var CyVaptcha = class {
   constructor(vaptcha, config2) {
-    this.config = config2;
+    __publicField(this, "config");
+    __publicField(this, "vaptcha");
+    this.config = { ...config2 };
     this.vaptcha = vaptcha;
   }
   /** @deprecated 官方文档未提供 */
@@ -51,10 +57,10 @@ var CyVaptcha = class {
 };
 
 // node_modules/@chongying-star/vaptcha-typescript/dist/cy-vaptcha.js
-async function createVaptcha(option, CyVaptchaType, overrideConfig) {
+async function createVaptcha(option, CyVaptchaType, overwriteConfig) {
   const obj = await window.vaptcha(option);
   const config2 = {};
-  Object.assign(config2, config, overrideConfig);
+  Object.assign(config2, config, overwriteConfig);
   const vaptcha = new (CyVaptchaType ?? CyVaptcha)(obj, config2);
   if (config2.immediateRender && (option.mode === "click" || option.mode === "embedded")) {
     vaptcha.render();

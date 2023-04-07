@@ -1,19 +1,23 @@
 {
-  "hash": "f430bba2",
-  "browserHash": "69354a72",
+  "hash": "38ab78aa",
+  "browserHash": "c6d2a2c6",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "cec896bb",
+      "fileHash": "c6c820b9",
       "needsInterop": false
     },
     "@chongying-star/vaptcha-typescript": {
       "src": "../../../../node_modules/@chongying-star/vaptcha-typescript/dist/index.js",
       "file": "@chongying-star_vaptcha-typescript.js",
-      "fileHash": "bb066afa",
+      "fileHash": "f9539df5",
       "needsInterop": false
     }
   },
-  "chunks": {}
+  "chunks": {
+    "chunk-T2T6Q22Z": {
+      "file": "chunk-T2T6Q22Z.js"
+    }
+  }
 }

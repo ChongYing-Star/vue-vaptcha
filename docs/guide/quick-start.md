@@ -10,7 +10,7 @@
   <VaptchaButton
     v-model="token"
     v-model:server="server"
-    vid="59b252ed57f5a21114866a5d"
+    vid="your vid ..."
   />
 </template>
 <script setup>
@@ -27,7 +27,7 @@ const token = ref(''), server = ref('');
   <VaptchaPanel
     v-model="token"
     v-model:server="server"
-    vid="59b252ed57f5a21114866a5d"
+    vid="your vid ..."
   />
 </template>
 <script setup>
