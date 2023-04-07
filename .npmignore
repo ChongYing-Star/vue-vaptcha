@@ -180,6 +180,16 @@ yarn-error.log
 .eslintrc.cjs
 jest.config.ts
 
+# 去除没必要发布的文件
+**/*.test.*
+**/__mocks__/*
+**/__tests__/*
+.eslintignore
+.eslintrc.js
+.eslintrc.cjs
+jest.config.ts
+vitest.config.ts
+
 docs/
 packages/
 src/
