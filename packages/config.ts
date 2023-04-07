@@ -2,7 +2,7 @@ import { VaptchaOptionClickType, VaptchaOptionEmbeddedType, VaptchaOptionInvisib
 
 export type Option = Omit<VaptchaOptionClickType, 'mode'|'container'> & Omit<VaptchaOptionEmbeddedType, 'mode'|'container'> & Omit<VaptchaOptionInvisibleType, 'mode'>;
 
-export const _option: Partial<Option> = {};
+const _option: Partial<Option> = {};
 export const option: Readonly<Partial<Option>> = new Proxy(_option, {
   set () { return false; },
 });

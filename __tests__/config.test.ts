@@ -1,12 +1,16 @@
 import { test, expect } from 'vitest';
 import { use, option } from '@packages/config';
 
+test('Get default option', () => {
+  expect(option).toEqual({});
+});
+
 test.each([
   { scene: 1 },
   { scene: 2, lang: 'auto' },
   { lang: 'auto' },
   { area: 'auto' },
-])('Use "%o"', (o) => {
+])('Use option: "%o"', (o) => {
   const old = { ...option };
   use(o as any);
   expect(option).toEqual({ ...old, ...o });
