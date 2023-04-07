@@ -123,15 +123,30 @@ test.each([
   { scene: 2, lang: 'auto' },
   { lang: 'auto' },
   { area: 'auto' },
-])('Initialization with config: "%o"', async (defaultOption) => {
+])('Initialization with config: "%o" and set option', async (defaultOption) => {
   ((config as any)['__optionGetterMock'] as Mock).mockReturnValue(defaultOption);
   const {
     init,
   } = useInvisibleVaptcha();
-  await init({ vid: 'test vid', ...defaultOption } as any);
+  await init({ vid: 'test vid' });
 
   expect(createVaptcha).toHaveBeenCalledWith({
+    ...defaultOption,
     vid: 'test vid',
+    mode: 'invisible',
+  });
+});
+
+test.each([
+  { vid: 'config vid' },
+])('Initialization with config: "%o" and not set option', async (defaultOption) => {
+  ((config as any)['__optionGetterMock'] as Mock).mockReturnValue(defaultOption);
+  const {
+    init,
+  } = useInvisibleVaptcha();
+  await init();
+
+  expect(createVaptcha).toHaveBeenCalledWith({
     ...defaultOption,
     mode: 'invisible',
   });
