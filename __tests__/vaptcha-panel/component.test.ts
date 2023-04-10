@@ -27,8 +27,11 @@ beforeEach(() => createVaptcha.mockRestore());
  */
 
 test('Initialization', async () => {
+  let resolve: (value: CyVaptcha | PromiseLike<CyVaptcha>) => void;
+  createVaptcha.mockReturnValue(new Promise((r) => resolve = r));
   const wrapper = mount(Panel as any, { props: { vid: 'test vid' } });
   await flushPromises();
+  await nextTick();
   await new Promise((r) => setTimeout(r, 50));
 
   expect(createVaptcha).toHaveBeenCalledOnce();
@@ -41,7 +44,19 @@ test('Initialization', async () => {
     immediateRender: true,
   });
 
-  const vaptcha = createVaptcha.mock.results[0].value as MockCyVaptcha;
+  expect(wrapper.classes()).toContain('is-loading');
+  expect(wrapper.find('.vue-vaptcha-panel-loading').exists()).toBe(true);
+
+  const vaptcha = new MockCyVaptcha();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  resolve!(vaptcha as unknown as CyVaptcha);
+  await flushPromises();
+  await nextTick();
+  await new Promise((r) => setTimeout(r, 50));
+
+  expect(wrapper.classes()).not.toContain('is-loading');
+  expect(wrapper.find('.vue-vaptcha-panel-loading').exists()).toBe(false);
+
   const instance = wrapper.vm as InstanceType<typeof Panel>;
   expect(toRaw(instance.vaptchaInstance)).toBe(vaptcha);
   expect(instance.reset).toBeTypeOf('function');
@@ -52,9 +67,6 @@ test('Initialization', async () => {
   expect(consoleSpy).toHaveBeenCalledOnce();
   expect(toRaw(instance.vaptchaInstance)).toBe(vaptcha);
   expect(consoleSpy.mock.calls[0][0]).toBe('[Vue warn] Set operation on key "value" failed: target is readonly.');
-
-  await nextTick();
-  expect(wrapper.find('.vue-vaptcha-panel-loading').exists()).toBe(false);
 });
 
 test('Initialization should called vaptcha\'s methods', async () => {

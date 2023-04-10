@@ -1,6 +1,6 @@
 <template>
-  <div class="vue-vaptcha-button" :class="{ 'is-disabled': disabled }" ref="element">
-    <slot v-if="loading" name="loading">
+  <div class="vue-vaptcha-button" :class="{ 'is-disabled': disabled, 'is-loading': loading }" ref="element">
+    <slot name="loading">
       <div class="vue-vaptcha-button-loading">
         <svg xmlns="http://www.w3.org/2000/svg" width="48px" height="60px" viewBox="0 0 24 30">
           <rect x="0" y="9.22656" width="4" height="12.5469">
