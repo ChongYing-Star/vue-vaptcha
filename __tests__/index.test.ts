@@ -6,7 +6,7 @@ test('Exports', async () => {
     { default: VaptchaButton },
     { default: VaptchaPanel },
     { useInvisibleVaptcha, verifyAndGetToken, InitError, VerifyClosed },
-    { use },
+    { useDefaultOption },
   ] = await Promise.all([
     import('@packages/index'),
     import('@packages/vaptcha-button/index'),
@@ -20,5 +20,5 @@ test('Exports', async () => {
   expect(exports_.verifyAndGetToken).toBe(verifyAndGetToken);
   expect(exports_.InitError).toBe(InitError);
   expect(exports_.VerifyClosed).toBe(VerifyClosed);
-  expect(exports_.use).toBe(use);
+  expect(exports_.useDefaultOption).toBe(useDefaultOption);
 });

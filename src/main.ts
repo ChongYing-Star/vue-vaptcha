@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import { use } from '@packages/index';
+import { useDefaultOption } from '@packages/index';
 // import { VaptchaButton, VaptchaPanel } from '@packages/index';
 
-use({
+useDefaultOption({
   vid: '59b252ed57f5a21114866a5d',
 });
 

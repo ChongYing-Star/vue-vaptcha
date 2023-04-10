@@ -7,6 +7,6 @@ export const option: Readonly<Partial<Option>> = new Proxy(_option, {
   set () { return false; },
 });
 
-export const use = (option: Partial<Option>) => {
+export const useDefaultOption = (option: Partial<Option>) => {
   Object.assign(_option, option);
 };

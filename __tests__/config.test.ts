@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { use, option } from '@packages/config';
+import { useDefaultOption, option } from '@packages/config';
 
 test('Get default option', () => {
   expect(option).toEqual({});
@@ -12,7 +12,7 @@ test.each([
   { area: 'auto' },
 ])('Use option: "%o"', (o) => {
   const old = { ...option };
-  use(o as any);
+  useDefaultOption(o as any);
   expect(option).toEqual({ ...old, ...o });
 });
 
