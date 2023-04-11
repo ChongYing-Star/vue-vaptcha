@@ -13,7 +13,7 @@ export default defineConfig({
     socialLinks: [{ icon: "github", link: "https://github.com/ChongYing-Star/vue-vaptcha/" }],
     nav: [
       {
-        text: '1.0.0-beta.0',
+        text: '1.0.0-beta.1',
         items: [
           { text: 'NPM', link: 'https://www.npmjs.com/package/@chongying-star/vue-vaptcha' },
           { text: 'Changelog', link: 'https://github.com/ChongYing-Star/vue-vaptcha/releases' },

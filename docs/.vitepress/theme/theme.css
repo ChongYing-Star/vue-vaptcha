@@ -1,7 +1,14 @@
 :root {
   --table-stripe-bg: #f8f8f8;
   --inline-code-bg: #eee;
+  --vp-custom-block-details-code-bg: rgba(0, 0, 0, .08);
   --vp-layout-max-width: 100vw;
+}
+
+.dark {
+  --table-stripe-bg: var(--vp-c-bg-soft);
+  --inline-code-bg: var(--vp-c-mute);
+  --vp-custom-block-details-code-bg: rgba(255, 255, 255, .08);
 }
 
 @media (min-width: 1920px) {
@@ -12,11 +19,6 @@
 
 .VPDoc.has-aside .content .content-container {
   max-width: unset;
-}
-
-.dark {
-  --table-stripe-bg: var(--vp-c-bg-soft);
-  --inline-code-bg: var(--vp-c-mute);
 }
 
 .vp-doc tr:nth-child(2n) {

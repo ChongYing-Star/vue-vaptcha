@@ -10,7 +10,7 @@
 ### 使用方法
 
 ```javascript
-import { verifyAndGetToken, VerifyClosed } from '@packages/index';
+import { verifyAndGetToken, VerifyClosed } from '@chongying-star/vue-vaptcha';
 async function onFormSubmit () {
   try {
     const { server, token } = await verifyAndGetToken();

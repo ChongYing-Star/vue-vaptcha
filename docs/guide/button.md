@@ -19,7 +19,7 @@ const token = ref(''), server = ref('');
 import '@chongying-star/vue-vaptcha/style.css';
 import { VaptchaButton } from '@chongying-star/vue-vaptcha';
 
-const vid = '...' // 使用你自己的vid
+const vid = '...'; // 使用你自己的vid
 const token = ref(''), server = ref('');
 </script>
 ```
@@ -36,15 +36,20 @@ token = "{{ token }}"
 server = "{{ server }}"
 :::
 
+## Attributes
+
+| Attribute | Description   | Type                                        | Accepted Values | Default |
+| --------- | ------------- | ------------------------------------------- | --------------- | ------- |
+| vid       | 验证单元的VID | `string?`                                   | --              | --      |
+| scene     | 验证单元场景  | `number?`                                   | `0`~`6`         | --      |
+| option    | Vaptcha选项   | `Readonly<Partial<VaptchaOptionClickType>>` | --              | --      |
+
 ## Props
 
-| Attribute | Description                   | Type                                        | Accepted Values | Default      |
-| --------- | ----------------------------- | ------------------------------------------- | --------------- | ------------ |
-| vid       | 验证单元的VID（**非响应式**） | `string?`                                   | --              | --           |
-| scene     | 验证单元场景（**非响应式**）  | `number?`                                   | `0`~`6`         | --           |
-| timeout   | Token过期时间（毫秒）         | `number?`                                   | --              | `120 * 1000` |
-| disabled  | 禁用                          | `boolean?`                                  | --              | `false`      |
-| option    | Vaptcha选项（**非响应式**）   | `Readonly<Partial<VaptchaOptionClickType>>` | --              | --           |
+| Prop     | Description           | Type       | Accepted Values | Default      |
+| -------- | --------------------- | ---------- | --------------- | ------------ |
+| timeout  | Token过期时间（毫秒） | `number?`  | --              | `120 * 1000` |
+| disabled | 禁用                  | `boolean?` | --              | `false`      |
 
 ## Events
 
